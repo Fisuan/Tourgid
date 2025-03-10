@@ -1,0 +1,51 @@
+{
+  "expo": {
+    "name": "TourGid",
+    "slug": "tourgid",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "backgroundColor": "#ffffff"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.yourcompany.tourgid",
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "Приложению требуется доступ к вашему местоположению для отображения на карте и построения маршрутов."
+      },
+      "config": {
+        "googleMapsApiKey": "AIzaSyDs42whH2dBmdmuNLIL2dN-i8C9VzxPVnU"
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#ffffff"
+      },
+      "package": "com.yourcompany.tourgid",
+      "permissions": [
+        "ACCESS_FINE_LOCATION",
+        "ACCESS_COARSE_LOCATION"
+      ],
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyDs42whH2dBmdmuNLIL2dN-i8C9VzxPVnU"
+        }
+      }
+    },
+    "platforms": [
+      "ios",
+      "android",
+      "web"
+    ],
+    "newArchEnabled": true,
+    "extra": {
+      "eas": {
+        "projectId": "91206025-dd3a-4308-abfa-5e8ea3e2de36"
+      }
+    }
+  }
+}
