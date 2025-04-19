@@ -1,0 +1,47 @@
+{
+  "common": {
+    "search": "Көрікті жерлерді іздеу...",
+    "menu": "Мәзір",
+    "noResults": "Көрікті жерлер табылмады",
+    "readMore": "Толығырақ",
+    "showOnMap": "Картадан көрсету"
+  },
+  "menuItems": {
+    "historicalFacts": "Тарихи деректер",
+    "regionInfo": "Аймақ туралы",
+    "settings": "Баптаулар"
+  },
+  "screens": {
+    "home": {
+      "title": "TourGid"
+    },
+    "attractionDetail": {
+      "title": "Толығырақ",
+      "historicalInfo": "Тарихи анықтама",
+      "workingHours": "Жұмыс уақыты",
+      "contacts": "Байланыс",
+      "weekdays": "Жұмыс күндері",
+      "weekend": "Демалыс күндері",
+      "dayOff": "Демалыс күні"
+    },
+    "historicalFacts": {
+      "title": "Тарихи деректер"
+    },
+    "settings": {
+      "title": "Баптаулар"
+    },
+    "regionInfo": {
+      "title": "Аймақ туралы"
+    },
+    "map": {
+      "title": "Карта"
+    }
+  },
+  "interests": {
+    "music": "Музыка",
+    "history": "Тарих",
+    "nature": "Табиғат",
+    "culture": "Мәдениет",
+    "architecture": "Сәулет өнері"
+  }
+} 

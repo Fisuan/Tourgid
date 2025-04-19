@@ -1,68 +1,68 @@
 import React from 'react';
 import { View, Text, FlatList, TouchableOpacity, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { useTheme } from '../context/ThemeContext';
+import { useTranslation } from 'react-i18next';
 
-export const InterestSelector = ({ interests, selectedInterest, onSelect }) => (
-  <View style={styles.container}>
-    <Text style={styles.title}>Выберите интересы</Text>
-    <FlatList
-      horizontal
-      data={interests}
-      keyExtractor={(item) => item.id}
-      showsHorizontalScrollIndicator={false}
-      renderItem={({ item }) => (
-        <TouchableOpacity 
-          style={[
-            styles.button,
-            selectedInterest?.id === item.id && styles.buttonSelected
-          ]}
-          onPress={() => onSelect(item)}
-        >
-          <Ionicons 
-            name={item.icon} 
-            size={24} 
-            color={selectedInterest?.id === item.id ? '#FFFFFF' : '#333'} 
-          />
-          <Text style={[
-            styles.buttonText,
-            selectedInterest?.id === item.id && styles.buttonTextSelected
-          ]}>
-            {item.name}
-          </Text>
-        </TouchableOpacity>
-      )}
-    />
-  </View>
-);
+export const InterestSelector = ({ interests, onSelect, selectedInterest }) => {
+  const { theme } = useTheme();
+  const { t } = useTranslation();
+  
+  return (
+    <View style={styles.container}>
+      <FlatList
+        data={interests}
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        keyExtractor={(item) => item.id}
+        renderItem={({ item }) => {
+          const isSelected = selectedInterest && selectedInterest.id === item.id;
+          
+          return (
+            <TouchableOpacity
+              style={[
+                styles.interestItem,
+                { backgroundColor: theme.isDark ? '#333333' : '#F0F8FF' },
+                isSelected && { backgroundColor: theme.colors.primary }
+              ]}
+              onPress={() => onSelect(item)}
+              activeOpacity={0.7}
+            >
+              <Ionicons 
+                name={item.icon} 
+                size={24} 
+                color={isSelected ? '#FFFFFF' : theme.colors.primary} 
+              />
+              <Text 
+                style={[
+                  styles.interestText,
+                  { color: isSelected ? '#FFFFFF' : theme.colors.primary },
+                ]}
+              >
+                {t(`interests.${item.id}`)}
+              </Text>
+            </TouchableOpacity>
+          );
+        }}
+      />
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
-    marginVertical: 15,
+    marginBottom: 20,
   },
-  title: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#333',
-    marginBottom: 10,
-  },
-  button: {
+  interestItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#F0F0F0',
-    paddingHorizontal: 15,
     paddingVertical: 8,
+    paddingHorizontal: 15,
     borderRadius: 20,
     marginRight: 10,
   },
-  buttonSelected: {
-    backgroundColor: '#2196F3',
-  },
-  buttonText: {
+  interestText: {
     marginLeft: 8,
-    color: '#333',
-    fontSize: 14,
-  },
-  buttonTextSelected: {
-    color: '#FFFFFF',
-  },
+    fontWeight: '500',
+  }
 }); 

@@ -1,183 +1,103 @@
-import React, { useState } from 'react';
-import { 
-  View, 
-  Text, 
-  StyleSheet, 
-  Switch, 
-  TouchableOpacity, 
-  ScrollView,
-  Alert
-} from 'react-native';
+import React from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, Switch } from 'react-native';
+import { useTheme } from '../context/ThemeContext';
+import { useLanguage } from '../context/LanguageContext';
 import { Ionicons } from '@expo/vector-icons';
+import { useTranslation } from 'react-i18next';
 
-export const SettingsScreen = ({ navigation }) => {
-  const [darkMode, setDarkMode] = useState(false);
-  const [notifications, setNotifications] = useState(true);
-  const [offlineMode, setOfflineMode] = useState(false);
-  const [language, setLanguage] = useState('Русский');
-  
-  const toggleDarkMode = () => setDarkMode(previousState => !previousState);
-  const toggleNotifications = () => setNotifications(previousState => !previousState);
-  const toggleOfflineMode = () => setOfflineMode(previousState => !previousState);
-  
-  const showLanguageOptions = () => {
-    Alert.alert(
-      "Выбор языка",
-      "Выберите предпочитаемый язык",
-      [
-        { text: "Русский", onPress: () => setLanguage('Русский') },
-        { text: "Қазақша", onPress: () => setLanguage('Қазақша') },
-        { text: "English", onPress: () => setLanguage('English') },
-        { text: "Отмена", style: "cancel" }
-      ]
-    );
-  };
-  
-  const clearCache = () => {
-    Alert.alert(
-      "Очистить кэш",
-      "Вы уверены, что хотите очистить кэш приложения?",
-      [
-        { text: "Отмена", style: "cancel" },
-        { text: "Очистить", onPress: () => Alert.alert("Готово", "Кэш успешно очищен") }
-      ]
-    );
-  };
-  
+export const SettingsScreen = () => {
+  const { theme, isDark, toggleTheme } = useTheme();
+  const { language, changeLanguage } = useLanguage();
+  const { t } = useTranslation();
+
+  const languages = [
+    { code: 'en', name: 'English', flag: '🇬🇧' },
+    { code: 'ru', name: 'Русский', flag: '🇷🇺' },
+    { code: 'kz', name: 'Қазақша', flag: '🇰🇿' },
+  ];
+
   return (
-    <ScrollView style={styles.container}>
-      <Text style={styles.sectionTitle}>Внешний вид</Text>
-      <View style={styles.settingItem}>
-        <View style={styles.settingInfo}>
-          <Ionicons name="moon" size={24} color="#555" style={styles.icon} />
-          <Text style={styles.settingText}>Темная тема</Text>
-        </View>
-        <Switch
-          trackColor={{ false: "#767577", true: "#81b0ff" }}
-          thumbColor={darkMode ? "#2196F3" : "#f4f3f4"}
-          ios_backgroundColor="#3e3e3e"
-          onValueChange={toggleDarkMode}
-          value={darkMode}
-        />
+    <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
+      <View style={styles.section}>
+        <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>
+          {t('screens.settings.languageSection')}
+        </Text>
+        
+        {languages.map((lang) => (
+          <TouchableOpacity
+            key={lang.code}
+            style={[
+              styles.optionItem,
+              { backgroundColor: language === lang.code ? theme.colors.primary + '20' : 'transparent' }
+            ]}
+            onPress={() => changeLanguage(lang.code)}
+          >
+            <Text style={styles.languageFlag}>{lang.flag}</Text>
+            <Text style={[styles.optionText, { color: theme.colors.text }]}>{lang.name}</Text>
+            {language === lang.code && (
+              <Ionicons name="checkmark" size={20} color={theme.colors.primary} />
+            )}
+          </TouchableOpacity>
+        ))}
       </View>
-      
-      <Text style={styles.sectionTitle}>Уведомления</Text>
-      <View style={styles.settingItem}>
-        <View style={styles.settingInfo}>
-          <Ionicons name="notifications" size={24} color="#555" style={styles.icon} />
-          <Text style={styles.settingText}>Уведомления</Text>
+
+      <View style={styles.section}>
+        <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>
+          {t('screens.settings.themeSection')}
+        </Text>
+        
+        <View style={styles.optionItem}>
+          <Ionicons 
+            name={isDark ? "moon" : "sunny"} 
+            size={24} 
+            color={theme.colors.text} 
+            style={styles.optionIcon}
+          />
+          <Text style={[styles.optionText, { color: theme.colors.text }]}>
+            {t('screens.settings.darkMode')}
+          </Text>
+          <Switch
+            value={isDark}
+            onValueChange={toggleTheme}
+            trackColor={{ false: "#767577", true: theme.colors.primary + "80" }}
+            thumbColor={isDark ? theme.colors.primary : "#f4f3f4"}
+          />
         </View>
-        <Switch
-          trackColor={{ false: "#767577", true: "#81b0ff" }}
-          thumbColor={notifications ? "#2196F3" : "#f4f3f4"}
-          ios_backgroundColor="#3e3e3e"
-          onValueChange={toggleNotifications}
-          value={notifications}
-        />
       </View>
-      
-      <Text style={styles.sectionTitle}>Данные</Text>
-      <View style={styles.settingItem}>
-        <View style={styles.settingInfo}>
-          <Ionicons name="cloud-offline" size={24} color="#555" style={styles.icon} />
-          <Text style={styles.settingText}>Оффлайн режим</Text>
-        </View>
-        <Switch
-          trackColor={{ false: "#767577", true: "#81b0ff" }}
-          thumbColor={offlineMode ? "#2196F3" : "#f4f3f4"}
-          ios_backgroundColor="#3e3e3e"
-          onValueChange={toggleOfflineMode}
-          value={offlineMode}
-        />
-      </View>
-      
-      <TouchableOpacity style={styles.settingItem} onPress={clearCache}>
-        <View style={styles.settingInfo}>
-          <Ionicons name="trash-bin" size={24} color="#555" style={styles.icon} />
-          <Text style={styles.settingText}>Очистить кэш</Text>
-        </View>
-        <Ionicons name="chevron-forward" size={24} color="#999" />
-      </TouchableOpacity>
-      
-      <Text style={styles.sectionTitle}>Язык</Text>
-      <TouchableOpacity style={styles.settingItem} onPress={showLanguageOptions}>
-        <View style={styles.settingInfo}>
-          <Ionicons name="language" size={24} color="#555" style={styles.icon} />
-          <Text style={styles.settingText}>Язык приложения</Text>
-        </View>
-        <View style={styles.valueContainer}>
-          <Text style={styles.valueText}>{language}</Text>
-          <Ionicons name="chevron-forward" size={24} color="#999" />
-        </View>
-      </TouchableOpacity>
-      
-      <Text style={styles.sectionTitle}>О приложении</Text>
-      <View style={styles.settingItem}>
-        <View style={styles.settingInfo}>
-          <Ionicons name="information-circle" size={24} color="#555" style={styles.icon} />
-          <Text style={styles.settingText}>Версия</Text>
-        </View>
-        <Text style={styles.valueText}>1.0.0</Text>
-      </View>
-      
-      <TouchableOpacity style={styles.settingItem}>
-        <View style={styles.settingInfo}>
-          <Ionicons name="document-text" size={24} color="#555" style={styles.icon} />
-          <Text style={styles.settingText}>Политика конфиденциальности</Text>
-        </View>
-        <Ionicons name="chevron-forward" size={24} color="#999" />
-      </TouchableOpacity>
-      
-      <TouchableOpacity style={styles.settingItem}>
-        <View style={styles.settingInfo}>
-          <Ionicons name="help-circle" size={24} color="#555" style={styles.icon} />
-          <Text style={styles.settingText}>Помощь</Text>
-        </View>
-        <Ionicons name="chevron-forward" size={24} color="#999" />
-      </TouchableOpacity>
-    </ScrollView>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFFFFF',
-    padding: 15,
+    padding: 20,
+  },
+  section: {
+    marginBottom: 30,
   },
   sectionTitle: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: '#333',
-    marginTop: 20,
-    marginBottom: 10,
+    marginBottom: 15,
   },
-  settingItem: {
+  optionItem: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
     paddingVertical: 12,
-    borderBottomWidth: 1,
-    borderBottomColor: '#F0F0F0',
+    paddingHorizontal: 16,
+    marginBottom: 8,
+    borderRadius: 8,
   },
-  settingInfo: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  icon: {
+  optionIcon: {
     marginRight: 15,
   },
-  settingText: {
+  optionText: {
     fontSize: 16,
-    color: '#333',
+    flex: 1,
   },
-  valueContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  valueText: {
-    fontSize: 16,
-    color: '#999',
-    marginRight: 5,
+  languageFlag: {
+    fontSize: 20,
+    marginRight: 12,
   },
 }); 

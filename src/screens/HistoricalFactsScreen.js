@@ -1,41 +1,111 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { 
   View, 
   Text, 
   FlatList, 
   StyleSheet,
   TouchableOpacity,
-  Image 
+  Image,
+  Modal,
+  ScrollView
 } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import { useTheme } from '../context/ThemeContext';
+import { useTranslation } from 'react-i18next';
 
 const HISTORICAL_FACTS = [
   {
     id: '1',
     year: '1720',
-    title: 'Основание Павлодара',
-    description: 'История города началась с основания форпоста Коряковский...',
+    title: 'historicalFacts.pavlodarFoundation.title',
+    description: 'historicalFacts.pavlodarFoundation.description',
+    fullDescription: 'historicalFacts.pavlodarFoundation.fullDescription',
     image: require('../assets/historical/pavlodar-foundation.jpg')
   },
-  // Добавьте больше исторических фактов
+  {
+    id: '2',
+    year: '1861',
+    title: 'historicalFacts.cityStatus.title',
+    description: 'historicalFacts.cityStatus.description',
+    fullDescription: 'historicalFacts.cityStatus.fullDescription',
+    image: require('../assets/historical/pavlodar-city.jpeg')
+  },
+  {
+    id: '3',
+    year: '1955',
+    title: 'historicalFacts.virginLands.title',
+    description: 'historicalFacts.virginLands.description',
+    fullDescription: 'historicalFacts.virginLands.fullDescription',
+  }
 ];
 
 export const HistoricalFactsScreen = () => {
+  const [selectedFact, setSelectedFact] = useState(null);
+  const [modalVisible, setModalVisible] = useState(false);
+  
+  const { theme } = useTheme();
+  const { t } = useTranslation();
+
+  const openFactDetails = (fact) => {
+    setSelectedFact(fact);
+    setModalVisible(true);
+  };
+
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
       <FlatList
         data={HISTORICAL_FACTS}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
-          <TouchableOpacity style={styles.factCard}>
+          <TouchableOpacity 
+            style={[styles.factCard, { backgroundColor: theme.colors.cardBackground }]}
+            onPress={() => openFactDetails(item)}
+            activeOpacity={0.7}
+          >
             <Image source={item.image} style={styles.factImage} />
             <View style={styles.factContent}>
-              <Text style={styles.year}>{item.year}</Text>
-              <Text style={styles.title}>{item.title}</Text>
-              <Text style={styles.description}>{item.description}</Text>
+              <Text style={[styles.year, { color: theme.colors.primary }]}>{item.year}</Text>
+              <Text style={[styles.title, { color: theme.colors.text }]}>{t(item.title)}</Text>
+              <Text style={[styles.description, { color: theme.colors.textSecondary }]}>{t(item.description)}</Text>
+              <View style={styles.readMoreContainer}>
+                <Text style={[styles.readMore, { color: theme.colors.primary }]}>{t('common.readMore')}</Text>
+                <Ionicons name="chevron-forward" size={16} color={theme.colors.primary} />
+              </View>
             </View>
           </TouchableOpacity>
         )}
       />
+
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => setModalVisible(false)}
+      >
+        <View style={styles.modalContainer}>
+          <View style={[styles.modalContent, { backgroundColor: theme.colors.cardBackground }]}>
+            <TouchableOpacity 
+              style={styles.closeButton}
+              onPress={() => setModalVisible(false)}
+            >
+              <Ionicons name="close" size={24} color={theme.colors.text} />
+            </TouchableOpacity>
+            
+            {selectedFact && (
+              <ScrollView>
+                <Image source={selectedFact.image} style={styles.modalImage} />
+                <View style={styles.modalTextContent}>
+                  <Text style={[styles.modalYear, { color: theme.colors.primary }]}>{selectedFact.year}</Text>
+                  <Text style={[styles.modalTitle, { color: theme.colors.text }]}>{t(selectedFact.title)}</Text>
+                  <Text style={[styles.modalDescription, { color: theme.colors.textSecondary }]}>
+                    {t(selectedFact.fullDescription)}
+                  </Text>
+                </View>
+              </ScrollView>
+            )}
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 };
@@ -43,11 +113,9 @@ export const HistoricalFactsScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F5F5F5',
     padding: 15,
   },
   factCard: {
-    backgroundColor: '#FFFFFF',
     borderRadius: 10,
     marginBottom: 15,
     overflow: 'hidden',
@@ -68,18 +136,67 @@ const styles = StyleSheet.create({
   year: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: '#2196F3',
     marginBottom: 5,
   },
   title: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: '#333',
     marginBottom: 10,
   },
   description: {
     fontSize: 16,
-    color: '#666',
+    lineHeight: 24,
+    marginBottom: 10,
+  },
+  readMoreContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  readMore: {
+    fontSize: 14,
+    fontWeight: '500',
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalContent: {
+    width: '90%',
+    maxHeight: '80%',
+    borderRadius: 10,
+    overflow: 'hidden',
+  },
+  closeButton: {
+    position: 'absolute',
+    top: 10,
+    right: 10,
+    zIndex: 1,
+    backgroundColor: 'rgba(255, 255, 255, 0.8)',
+    borderRadius: 20,
+    padding: 5,
+  },
+  modalImage: {
+    width: '100%',
+    height: 250,
+    resizeMode: 'cover',
+  },
+  modalTextContent: {
+    padding: 20,
+  },
+  modalYear: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 5,
+  },
+  modalTitle: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 15,
+  },
+  modalDescription: {
+    fontSize: 16,
     lineHeight: 24,
   },
 }); 

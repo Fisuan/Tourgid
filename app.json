@@ -13,7 +13,7 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.yourcompany.tourgid",
+      "bundleIdentifier": "com.nepitch.tourgid",
       "infoPlist": {
         "NSLocationWhenInUseUsageDescription": "Приложению требуется доступ к вашему местоположению для отображения на карте и построения маршрутов."
       },
@@ -25,11 +25,6 @@
       "adaptiveIcon": {
         "backgroundColor": "#ffffff"
       },
-      "package": "com.yourcompany.tourgid",
-      "permissions": [
-        "ACCESS_FINE_LOCATION",
-        "ACCESS_COARSE_LOCATION"
-      ],
       "config": {
         "googleMaps": {
           "apiKey": "AIzaSyDs42whH2dBmdmuNLIL2dN-i8C9VzxPVnU"
@@ -41,6 +36,7 @@
       "android",
       "web"
     ],
+    "sdkVersion": "52.0.0",
     "newArchEnabled": true,
     "extra": {
       "eas": {

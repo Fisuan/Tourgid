@@ -98,13 +98,14 @@ export const ROUTES = [
     description: 'Познакомьтесь с богатой историей Павлодарского региона',
     duration: '1 день',
     difficulty: 'Лёгкий',
-    attractions: ['1', '3'], // ID достопримечательностей
+    attractions: ['1', '3'], 
     recommendedTransport: 'Автобус/Такси',
     tips: [
       'Возьмите с собой воду',
       'Удобная обувь обязательна',
       'Рекомендуется начать маршрут с утра'
-    ]
+    ],
+    image: require('../assets/pavlodar-museum.jpg'),
   },
   {
     id: '2',
@@ -157,7 +158,7 @@ const typography = {
     }
   },
   body: {
-    fontFamily: 'Lora', // serif шрифт для основного текста
+    fontFamily: 'Lora', 
     fontSize: 16,
     lineHeight: 24
   }

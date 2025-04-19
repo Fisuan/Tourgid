@@ -1,0 +1,50 @@
+{
+  "common": {
+    "search": "Search attractions...",
+    "menu": "Menu",
+    "noResults": "No attractions found",
+    "readMore": "Read more",
+    "showOnMap": "Show on map"
+  },
+  "menuItems": {
+    "historicalFacts": "Historical Facts",
+    "regionInfo": "Region Info",
+    "settings": "Settings"
+  },
+  "screens": {
+    "home": {
+      "title": "TourGid"
+    },
+    "attractionDetail": {
+      "title": "Details",
+      "historicalInfo": "Historical Information",
+      "workingHours": "Working Hours",
+      "contacts": "Contacts",
+      "weekdays": "Weekdays",
+      "weekend": "Weekend",
+      "dayOff": "Day Off"
+    },
+    "historicalFacts": {
+      "title": "Historical Facts"
+    },
+    "settings": {
+      "title": "Settings",
+      "languageSection": "Language",
+      "themeSection": "Theme",
+      "darkMode": "Dark Mode"
+    },
+    "regionInfo": {
+      "title": "About Region"
+    },
+    "map": {
+      "title": "Map"
+    }
+  },
+  "interests": {
+    "music": "Music",
+    "history": "History",
+    "nature": "Nature",
+    "culture": "Culture",
+    "architecture": "Architecture"
+  }
+} 
