@@ -150,7 +150,7 @@ const historicalTheme = {
 
 const typography = {
   headings: {
-    fontFamily: 'Playfair Display', // классический шрифт
+    fontFamily: 'Playfair Display', 
     fontSize: {
       h1: 32,
       h2: 24,

@@ -36,8 +36,7 @@
       "android",
       "web"
     ],
-    "sdkVersion": "52.0.0",
-    "newArchEnabled": true,
+    "sdkVersion": "53.0.0",
     "extra": {
       "eas": {
         "projectId": "91206025-dd3a-4308-abfa-5e8ea3e2de36"

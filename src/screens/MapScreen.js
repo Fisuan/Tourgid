@@ -41,10 +41,8 @@ export const MapScreen = ({ route, navigation }) => {
         setShowRoute(true);
       }
     } else if (selectedAttractions && selectedAttractions.length > 0) {
-      // Если выбраны конкретные достопримечательности
       attractionsToShow = ATTRACTIONS.filter(a => selectedAttractions.includes(a.id));
     } else {
-      // По умолчанию показываем все
       attractionsToShow = ATTRACTIONS;
     }
     
